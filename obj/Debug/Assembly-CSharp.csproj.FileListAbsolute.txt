@@ -1,0 +1,2 @@
+C:\Users\Isaac Jasper\Desktop\Projects\rubix cube game\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\Isaac Jasper\Desktop\Projects\rubix cube game\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
