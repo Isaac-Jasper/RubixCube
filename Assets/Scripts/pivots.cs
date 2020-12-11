@@ -80,11 +80,11 @@ public class pivots : MonoBehaviour
             }
             if (currentAxis.y == 360)
             {
-                currentAxis.x = 0;
+                currentAxis.y = 0;
             }
             if (currentAxis.z == 360)
             {
-                currentAxis.x = 0;
+                currentAxis.z = 0;
             }
             switch (Axis)
             {
