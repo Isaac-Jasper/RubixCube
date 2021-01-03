@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2727482892033897883}
   m_Layer: 0
   m_Name: CubeDetector
-  m_TagString: Untagged
+  m_TagString: Detecter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,8 +58,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0292a31f9949fe24da0bdc064254a817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  createCube: {fileID: 373710755314344267}
   cubeLine: []
+  size: 0
+  rotate: 0
+  rotType: {x: 0, y: 0, z: 0}
+  rotatetrue: 0
+  targetPos: {fileID: 0}
+  createCube: {fileID: 0}
+  thisSize: {x: 0, y: 0, z: 0}
+  Rooms: {fileID: 0}
 --- !u!54 &2727482892033897883
 Rigidbody:
   m_ObjectHideFlags: 0

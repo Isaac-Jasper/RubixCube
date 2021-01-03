@@ -6,6 +6,9 @@ TagManager:
   tags:
   - CubeCreator
   - cube
+  - cubePos
+  - RoomsHolder
+  - Detecter
   layers:
   - Default
   - TransparentFX

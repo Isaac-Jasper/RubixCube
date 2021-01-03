@@ -8,27 +8,33 @@ public class cubes : MonoBehaviour
     public List<GameObject> cubeLine;
     public int size;
     public bool rotate;
-    public int rotType;
-    public Vector3 thisSize;
+    public Vector3 rotType;
     public bool rotatetrue;
+    public GameObject targetPos;
+    public createCube createCube;
+    public Vector3 thisSize;
+    public GameObject Rooms;
+    public bool canGetPos = true;
 
-    void Start() {
-        size = GameObject.FindGameObjectWithTag("CubeCreator").GetComponent<createCube>().size;
+    IEnumerator Start() {
+        Rooms = GameObject.FindGameObjectWithTag("RoomsHolder");
+        thisSize = GetComponent<BoxCollider>().size;
+        createCube = GameObject.FindGameObjectWithTag("CubeCreator").GetComponent<createCube>();
+        size = createCube.size;
         size = (size * size);
         cubeLine = new List<GameObject>();
-        thisSize = GetComponent<BoxCollider>().size;
-    }
-    void Update() //testing thing
-    {
-        if (rotatetrue)
-        {
-            rotatetrue = false;
-            Rotate();
-        }
+
+        yield return null;
+        
+        rotType = FindRotType();
     }
     void OnTriggerEnter(Collider col) {
-        if (col.CompareTag("cube")) {
+        if (col.CompareTag("cube"))
             cubeLine.Add(col.gameObject);
+
+        if (col.CompareTag("cubePos") && col.transform.position == transform.position && canGetPos == true) {
+            targetPos = col.gameObject;
+            canGetPos = false;
         }
     }
     void OnTriggerExit(Collider col) {
@@ -36,24 +42,49 @@ public class cubes : MonoBehaviour
             cubeLine.Remove(col.gameObject);
         }
     }
-    public void Rotate()
+    Vector3 FindRotType() {
+        Vector3 rotationType;
+
+        if (thisSize.x == 0) {
+            rotationType = new Vector3(90, 0, 0);
+        }
+        else if (thisSize.y == 0) {
+            rotationType = new Vector3(0, 90, 0);
+        }
+        else if (thisSize.z == 0) {
+            rotationType = new Vector3(0, 0, 90);
+        } else {
+            rotationType = new Vector3(0, 0, 0);
+        }
+        return rotationType;
+    }
+    public IEnumerator Rotate(int forwards)
     {
-        if (thisSize.x == thisSize.y)
+        yield return null;
+        if (forwards == 1)
+            targetPos.transform.Rotate(rotType, Space.Self);
+        if (forwards == 2) 
+            targetPos.transform.Rotate(-1 * rotType.x, -1 * rotType.y, -1 * rotType.z, Space.Self);
+
+        for (int i = 0; i < cubeLine.Count; i++)
         {
-            rotType = Random.Range(0, 2);
+            cubeLine[i].transform.parent = transform;
         }
-        if (thisSize.y == thisSize.z)
-        {
-            rotType = Random.Range(2, 4);
+
+        while (Quaternion.Angle(transform.localRotation, targetPos.transform.localRotation) >= 1) {
+            if (forwards == 1)
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPos.transform.localRotation, 2f); //probobly should multiply something by time.delta timne to make this consistant across devices
+            if (forwards == 2)
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPos.transform.localRotation, 2f);
+
+            yield return null;
         }
-        if (thisSize.x == thisSize.z)
-        {
-            rotType = Random.Range(4, 6);
+
+        transform.localRotation = targetPos.transform.localRotation;
+
+        for (int i = 0; i < cubeLine.Count; i++) {
+            cubeLine[i].transform.parent = Rooms.transform;
         }
-        for (int i = 0; i < size; i++)
-        {
-            cubeLine[i].GetComponent<pivots>().rotationDirection(this.transform.position, rotType);
-            cubeLine[i].GetComponent<pivots>().Rotate();
-        }
+        createCube.canRotate = true;
     } 
 }

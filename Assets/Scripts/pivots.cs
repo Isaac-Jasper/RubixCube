@@ -158,7 +158,7 @@ public class pivots : MonoBehaviour
         targetQ.eulerAngles = vecRot;
         transform.rotation = targetQ;
     }
-    void Update() //probaly source of my errors
+    void Update()
     {
         angles = T.localEulerAngles;
     }
