@@ -58,9 +58,9 @@
      <Compile Include="Assets\Scripts\createCube.cs" />
      <Compile Include="Assets\Scripts\pivots.cs" />
      <Compile Include="Assets\Scripts\RotationTestSmooth.cs" />
+     <Compile Include="Assets\Scripts\CenterDecider.cs" />
      <Compile Include="Assets\Scripts\cubes.cs" />
      <Compile Include="Assets\Scripts\RotationTest.cs" />
-     <Compile Include="Assets\Scripts\CenterDecider.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/Isaac Jasper/Desktop/Projects/rubix cube game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
