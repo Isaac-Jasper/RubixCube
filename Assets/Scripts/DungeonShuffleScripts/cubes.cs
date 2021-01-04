@@ -6,26 +6,30 @@ using UnityEngine;
 public class cubes : MonoBehaviour
 {
     public List<GameObject> cubeLine;
-    public int size;
-    public bool rotate;
-    public Vector3 rotType;
-    public bool rotatetrue;
     public GameObject targetPos;
-    public createCube createCube;
-    public Vector3 thisSize;
     public GameObject Rooms;
+    public createCube createCube;
+
+    public Vector3 thisSize;
+    public Vector3 rotType;
+
+    public int size;
+    public float speed;
+
+    public bool rotate;
+    public bool rotatetrue;
     public bool canGetPos = true;
 
-    IEnumerator Start() {
+    void Start() {
         Rooms = GameObject.FindGameObjectWithTag("RoomsHolder");
-        thisSize = GetComponent<BoxCollider>().size;
         createCube = GameObject.FindGameObjectWithTag("CubeCreator").GetComponent<createCube>();
+
+        speed = createCube.speed;
+        thisSize = GetComponent<BoxCollider>().size;
         size = createCube.size;
         size = (size * size);
         cubeLine = new List<GameObject>();
 
-        yield return null;
-        
         rotType = FindRotType();
     }
     void OnTriggerEnter(Collider col) {
@@ -36,12 +40,12 @@ public class cubes : MonoBehaviour
             targetPos = col.gameObject;
             canGetPos = false;
         }
-    }
+    } //adds cubes to the list when they enter and adds cubePos as its targetPos if it has the same position
     void OnTriggerExit(Collider col) {
         if (col.CompareTag("cube")) {
             cubeLine.Remove(col.gameObject);
         }
-    }
+    } //removes the cubes from the list when they exit the trigger
     Vector3 FindRotType() {
         Vector3 rotationType;
 
@@ -57,7 +61,7 @@ public class cubes : MonoBehaviour
             rotationType = new Vector3(0, 0, 0);
         }
         return rotationType;
-    }
+    } //determines the rotation type based on the size of its collider, returns a vector3 with its rotation
     public IEnumerator Rotate(int forwards)
     {
         yield return null;
@@ -73,9 +77,9 @@ public class cubes : MonoBehaviour
 
         while (Quaternion.Angle(transform.localRotation, targetPos.transform.localRotation) >= 1) {
             if (forwards == 1)
-                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPos.transform.localRotation, 2f); //probobly should multiply something by time.delta timne to make this consistant across devices
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPos.transform.localRotation, speed * Time.deltaTime) ;
             if (forwards == 2)
-                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPos.transform.localRotation, 2f);
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetPos.transform.localRotation, speed * Time.deltaTime);
 
             yield return null;
         }
@@ -86,5 +90,5 @@ public class cubes : MonoBehaviour
             cubeLine[i].transform.parent = Rooms.transform;
         }
         createCube.canRotate = true;
-    } 
+    } //rotates the collider and makes all the cubes connected children of it, and rotates the Target pos so we can rotate towards it
 }
