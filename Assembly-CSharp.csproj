@@ -57,8 +57,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\DungeonShuffleScripts\createCube.cs" />
      <Compile Include="Assets\Scripts\DungeonShuffleScripts\CenterDecider.cs" />
-     <Compile Include="Assets\Scripts\DungeonShuffleScripts\cubes.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\DungeonShuffleScripts\cubes.cs" />
+     <Compile Include="Assets\Scripts\LookScript.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>H:/profile/desktop/unity projects/rubix cube game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
