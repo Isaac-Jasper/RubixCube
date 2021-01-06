@@ -7,20 +7,27 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
 
     public float speed = 10f;
+    public float sprintSpeed;
     public float gravity = -9.81f;
     public float groundDistance = 0.4f;
     public float jumpHeight = 2f;
+    private float baseSpeed;
 
     public LayerMask groundMask;
     public Transform groundCheck;
 
     Vector3 velocity;
-    bool isGrounded;
+    bool canJump;
+
+    void Start()
+    {
+        baseSpeed = speed;
+    }
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        if (isGrounded && velocity.y < 0)
+        canJump = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        //canJump = true;
+        if (canJump && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -32,10 +39,13 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
+        if (Input.GetButtonDown("Jump") && canJump)
             velocity.y += Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
+
+        if (Input.GetButton("Sprint"))
+            speed = sprintSpeed;
+        else
+            speed = baseSpeed;
 
         velocity.y += gravity * Time.deltaTime;
 
