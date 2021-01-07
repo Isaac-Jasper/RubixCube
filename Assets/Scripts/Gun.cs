@@ -17,15 +17,41 @@ public class Gun : MonoBehaviour
     }
     void shoot()
     {
+        ParticleSystem shootClone;
         RaycastHit hit;
 
-        if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit)) //make it s oit creates a new version of the on hit particle system and have it face the player
+        if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit) && hit.transform.CompareTag("Player") == false) //make it s oit creates a new version of the on hit particle system and have it face the player
         {
-            //onHit = new ParticleSystem();
-            onHit.transform.position = hit.point;
-            onHit.transform.localRotation = Quaternion.LookRotation(transform.position, transform.position);    
-            onHit.Play();
+            shootClone = Instantiate(onHit, hit.point, onHit.transform.rotation);
+
+            hit.collider.gameObject.GetComponent<Rigidbody>().velocity += velocity(hit.collider.gameObject, transform.position);
+            //if it hits an eney the particles should switch to the enemy color/blood color
         }
         muzzleBurst.Play();
+    }
+
+    Vector3 velocity(GameObject hit, Vector3 pos)
+    {
+        Vector3 objectVelocity;
+        int maxVelociy = 5;
+        objectVelocity = hit.transform.position - pos;
+
+        if (objectVelocity.x > maxVelociy) {//positive velocity checks
+            objectVelocity.x = maxVelociy; //objectVelocity.x = maxVelociy - objectVelocity.x;
+        } if (objectVelocity.y > maxVelociy) {
+            objectVelocity.y = maxVelociy; //objectVelocity.y = maxVelociy - objectVelocity.y;
+        } if (objectVelocity.z > maxVelociy) {
+            objectVelocity.z = maxVelociy; //objectVelocity.z = maxVelociy - objectVelocity.z;
+        } 
+        
+        if (objectVelocity.x < -maxVelociy) { //negative velocity checks
+            objectVelocity.x = -maxVelociy; //objectVelocity.x = -maxVelociy + objectVelocity.x;
+        } if (objectVelocity.y < -maxVelociy) {
+            objectVelocity.y = -maxVelociy; //objectVelocity.y = -maxVelociy + objectVelocity.y;
+        } if (objectVelocity.z < -maxVelociy) {
+            objectVelocity.z = -maxVelociy; //objectVelocity.z = -maxVelociy + objectVelocity.z;
+        } 
+        // this code doesnt work and does weird stuff as expected
+        return objectVelocity;
     }
 }
