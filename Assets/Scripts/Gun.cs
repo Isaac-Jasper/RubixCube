@@ -25,7 +25,7 @@ public class Gun : MonoBehaviour
             shootClone = Instantiate(onHit, hit.point, onHit.transform.rotation);
 
             hit.collider.gameObject.GetComponent<Rigidbody>().velocity += velocity(hit.collider.gameObject, transform.position);
-            //if it hits an eney the particles should switch to the enemy color/blood color
+            //add it so if it hits an eney the particles switch to the enemy color/blood color
         }
         muzzleBurst.Play();
     }

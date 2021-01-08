@@ -21,10 +21,13 @@ public class createCube : MonoBehaviour
     public Transform center;
     //lists
     public List<GameObject> Detectors;
+    private List<GameObject> CubePos;
+    private List<GameObject> Cubes;
     //ints and floats
     public int size;
     public int turns = 5;
     public float speed = 5f;
+    public float scale;
     private float odd;
     //private and public bools for simple checks
     public bool canRotate = true;
@@ -38,6 +41,8 @@ public class createCube : MonoBehaviour
     IEnumerator Start() {
         centerVector = center.position;
         Detectors = new List<GameObject>();
+        CubePos = new List<GameObject>();
+        Cubes = new List<GameObject>();
         centerDecider = Instantiate(centerDecider, new Vector3((size / 2) + centerVector.x, (size / 2) + centerVector.y, (size / 2) + centerVector.z), centerDecider.transform.rotation); //the vector here should actually be a gameobject used to reference the center of the cube
         yield return new WaitUntil(() => centerDeciderCreated); //these checks stop stuff from happening before it should
         DetectorCreator();
@@ -56,6 +61,7 @@ public class createCube : MonoBehaviour
             confirm = true;
 
         yield return new WaitUntil(() => confirm);
+        transform.parent.transform.localScale = new Vector3(scale, scale, scale);
         StartCoroutine(RandRotate());
     }
 
@@ -69,12 +75,14 @@ public class createCube : MonoBehaviour
             detectorClone = Instantiate(detector, new Vector3((size / 2) - odd + centerVector.x, (size / 2) - odd + centerVector.y, i + centerVector.z), detector.transform.rotation);
             detectorClone.GetComponent<BoxCollider>().size = new Vector3(size, size, 0);
             detectorClone.transform.parent = detectorParent.transform;
+            //detectorClone.transform.localScale = new Vector3(scale, scale, scale);
             Detectors.Add(detectorClone);
         }
         for (int i = 0; i < size; i++) {
             detectorClone = Instantiate(detector, new Vector3(i + centerVector.x, (size / 2) - odd + centerVector.y, (size / 2) - odd + centerVector.z), detector.transform.rotation);
             detectorClone.GetComponent<BoxCollider>().size = new Vector3(0, size, size);
             detectorClone.transform.parent = detectorParent.transform;
+            //detectorClone.transform.localScale = new Vector3(scale, scale, scale);
             Detectors.Add(detectorClone);
         }
         for (int i = 0; i < size; i++)
@@ -82,6 +90,7 @@ public class createCube : MonoBehaviour
             detectorClone = Instantiate(detector, new Vector3((size / 2) - odd + centerVector.x, i + centerVector.y, (size / 2) - odd + centerVector.z), detector.transform.rotation);
             detectorClone.GetComponent<BoxCollider>().size = new Vector3(size, 0, size);
             detectorClone.transform.parent = detectorParent.transform;
+            //detectorClone.transform.localScale = new Vector3(scale, scale, scale);
             Detectors.Add(detectorClone);
         }
         detectorConfirm = true;
@@ -94,7 +103,9 @@ public class createCube : MonoBehaviour
                     cubeClone = Instantiate(cube, new Vector3(centerVector.x + x, centerVector.y + y, centerVector.z + z), cube.transform.rotation);
                     cubeClone.GetComponent<Renderer>().material.color = Random.ColorHSV();
                     cubeClone.transform.parent = roomsParent.transform;
-                    }
+                    Cubes.Add(cubeClone);
+                    //cubeClone.transform.localScale = new Vector3(scale, scale, scale);
+                }
                 }
             }
         cubeConfirm = true;
@@ -108,14 +119,17 @@ public class createCube : MonoBehaviour
         for (int i = 0; i < size; i++) {
             cubePosClone = Instantiate(cubePos, new Vector3((size / 2) - odd + centerVector.x, (size / 2) - odd + centerVector.y, i + centerVector.z), detector.transform.rotation);
             cubePosClone.transform.parent = cubePosParent.transform;
+            CubePos.Add(cubePosClone);
         }
         for (int i = 0; i < size; i++) {
             cubePosClone = Instantiate(cubePos, new Vector3(i + centerVector.x, (size / 2) - odd + centerVector.y, (size / 2) - odd + centerVector.z), detector.transform.rotation);
             cubePosClone.transform.parent = cubePosParent.transform;
+            CubePos.Add(cubePosClone);
         }
         for (int i = 0; i < size; i++) {
             cubePosClone = Instantiate(cubePos, new Vector3((size / 2) - odd + centerVector.x, i + centerVector.y, (size / 2) - odd + centerVector.z), detector.transform.rotation);
             cubePosClone.transform.parent = cubePosParent.transform;
+            CubePos.Add(cubePosClone);
         }
         targetConfirm = true;
     } //creates all the Targets which are used as pivot centers and reference angles and adds them to the parent Gameobject
@@ -134,5 +148,19 @@ public class createCube : MonoBehaviour
             }
             yield return new WaitUntil(() => canRotate);
         }
+
+        for (int i = 0; i < Cubes.Count; i++)
+        {
+            Cubes[i].GetComponent<Collider>().enabled = false;
+        }
+        for (int i = 0; i < CubePos.Count; i++)
+        {
+            Destroy(CubePos[i]);
+        }
+        for (int i = 0; i < Detectors.Count; i++)
+        {
+            Destroy(Detectors[i]);
+        }
+        Destroy(gameObject);
     } //will roitate the cube as many turns as the turns variable, starts rotate() on the specified Cubes Script
 }

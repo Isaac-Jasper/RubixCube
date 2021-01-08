@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CenterCube: {fileID: 6963104485073887754}
-  cube: {fileID: 7036375597351349301, guid: 09dfc8e9e75caf64b826bbcf3d9f3b0c, type: 3}
+  cube: {fileID: 8390954850994054591, guid: b358e8573822bcb4a9c592044e3cdaf8, type: 3}
   cubePos: {fileID: 3425307924701841339, guid: 4975c322ab3e39443b55d9b58a677dbd, type: 3}
   detector: {fileID: 3346333826594421999, guid: 3de2e5e8743d0744283def88297eb8fe,
     type: 3}
@@ -180,8 +180,10 @@ MonoBehaviour:
   center: {fileID: 6963104485073887754}
   Detectors: []
   size: 3
-  turns: 1000
+  turns: 10
   speed: 500
+  scale: 0
   canRotate: 1
   confirm: 0
   centerDeciderCreated: 0
+  hasDetected: 1

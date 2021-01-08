@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public Transform groundCheck;
 
+    public bool infiniteJumps;
     //public bool timer = false;
     //public bool canRRJump; //road runner jump
     Vector3 velocity;
@@ -31,8 +32,9 @@ public class PlayerMovement : MonoBehaviour
         //float counterHolder;
         //counter += Time.deltaTime;
         canJump = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        //canJump = true;
-        if (canJump && velocity.y < 0)
+        if (infiniteJumps)
+            canJump = true;
+        if (Physics.CheckSphere(groundCheck.position, groundDistance, groundMask) && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -44,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
+        if (Input.GetButtonDown("Jump") && infiniteJumps)
+            velocity.y = -2f;
         if (Input.GetButtonDown("Jump") && canJump)
             velocity.y += Mathf.Sqrt(jumpHeight * -2f * gravity);
 
