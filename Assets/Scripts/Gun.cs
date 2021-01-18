@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public PlayerStats playerStats;
     public ParticleSystem muzzleBurst;
     public ParticleSystem onHit;
+    public ParticleSystem onHitEnemy;
     public Camera mainCam;
+    public int layerMask = 1 << 2;
+    public float shotDistance = 100;
+
+    private void Start()
+    {
+        layerMask = ~layerMask;
+    }
 
     void Update()
     {
@@ -19,15 +28,24 @@ public class Gun : MonoBehaviour
     {
         ParticleSystem shootClone;
         RaycastHit hit;
-
-        if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit) && hit.transform.CompareTag("Player") == false) //make it s oit creates a new version of the on hit particle system and have it face the player
-        {
-            shootClone = Instantiate(onHit, hit.point, onHit.transform.rotation);
-
-            hit.collider.gameObject.GetComponent<Rigidbody>().velocity += velocity(hit.collider.gameObject, transform.position);
-            //add it so if it hits an eney the particles switch to the enemy color/blood color
-        }
         muzzleBurst.Play();
+
+        if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out hit, shotDistance, ~0, QueryTriggerInteraction.Ignore))
+        {
+            
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                shootClone = Instantiate(onHitEnemy, hit.point, onHit.transform.rotation);
+                hit.collider.GetComponent<FlyingEnemy1>().Shot(playerStats.damage);
+            }
+            else
+            {
+                shootClone = Instantiate(onHit, hit.point, onHit.transform.rotation);
+            }
+
+            if(hit.collider.gameObject.TryGetComponent(out Rigidbody RB))
+                RB.velocity += velocity(hit.collider.gameObject, transform.position);
+        }
     }
 
     Vector3 velocity(GameObject hit, Vector3 pos)
