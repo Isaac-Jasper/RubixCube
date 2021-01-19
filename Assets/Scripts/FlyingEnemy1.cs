@@ -60,9 +60,14 @@ public class FlyingEnemy1 : MonoBehaviour
 
         if (agro)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, 
-                Quaternion.LookRotation(player.transform.position - transform.position), //look at player
-                rotationSpeed * Time.deltaTime);
+            Vector3 direction;
+            Quaternion look_rotation;
+
+            direction = (player.transform.position - transform.position).normalized;
+
+            look_rotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, look_rotation, Time.deltaTime * rotationSpeed);
 
             if(!shooting)
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, spawnHeight, player.transform.position.z),  moveSpeed * Time.deltaTime);
@@ -70,7 +75,6 @@ public class FlyingEnemy1 : MonoBehaviour
             if (rand == 0 && !shooting)
                 StartCoroutine(shoot());
         }
-
 
     }
 

@@ -96,7 +96,7 @@ SphereCollider:
   m_GameObject: {fileID: 1641751282340607601}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -130,10 +130,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Death: {fileID: 3911296656533675633, guid: d084acb366ce2294f8b1066698154359, type: 3}
   ChargeShot: {fileID: 1466975914270622214}
-  lazer: {fileID: 4460795270988732762, guid: 56aa62e45b65ecf4daf3fdfe902b5f2a, type: 3}
   rb: {fileID: 1641751282340607607}
   shooter: {fileID: 1641751282825773747}
-  Bullet: {fileID: 8262610470045386139, guid: 260f83c79dcb6064086297f1f153cc21, type: 3}
+  Bullet: {fileID: 4974773840699522436, guid: 260f83c79dcb6064086297f1f153cc21, type: 3}
   attackDelay: 1000
   moveSpeed: 10
   gravity: -9.81
